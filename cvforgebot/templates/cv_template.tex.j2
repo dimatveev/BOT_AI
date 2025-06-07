@@ -1,0 +1,98 @@
+\documentclass[11pt]{article}
+
+% Basic packages
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+% Page layout
+\geometry{
+  a4paper,
+  margin=2cm
+}
+
+% Define custom commands for formatting
+\newcommand{\sectiontitle}[1]{
+  \vspace{0.5cm}
+  \noindent\textbf{\large #1}
+  \vspace{0.2cm}
+  \hrule
+  \vspace{0.3cm}
+}
+
+\newcommand{\cvitem}[2]{
+  \noindent\textbf{#1}: #2\\
+}
+
+\newcommand{\cventry}[4]{
+  \noindent\textbf{#1} \hfill #2\\
+  \textit{#3} \hfill \textit{#4}\\[0.3cm]
+}
+
+\begin{document}
+
+% Header
+\begin{center}
+  {\Huge\textbf{ {{ full_name|e }} }}\\[0.3cm]
+  \textit{
+    {{ phone|e }} | 
+    \href{mailto:{{ email|e }}}{{{ email|e }}} | 
+    {{ location|e }}
+  }
+\end{center}
+
+% Professional Summary
+\sectiontitle{Professional Summary}
+{{ professional_summary|e }}
+
+% Education
+\sectiontitle{Education}
+{% if education.degree or education.institution or education.year %}
+\cventry
+  { {{ education.degree|e }} }
+  { {{ education.year|e }} }
+  { {{ education.institution|e }} }
+  { {{ education.location|default('')|e }} }
+{% else %}
+No education data provided
+{% endif %}
+
+% Work Experience
+\sectiontitle{Work Experience}
+{% if experience.company or experience.position or experience.period %}
+\cventry
+  { {{ experience.position|e }} }
+  { {{ experience.period|e }} }
+  { {{ experience.company|e }} }
+  { {{ experience.location|default('')|e }} }
+\begin{itemize}
+  \item {{ experience.description|e }}
+\end{itemize}
+{% else %}
+No work experience provided
+{% endif %}
+
+% Skills
+\sectiontitle{Professional Skills}
+{% if skills %}
+\cvitem{Technical Skills}{ {{ skills|e }} }
+{% else %}
+No skills specified
+{% endif %}
+
+% Languages
+\sectiontitle{Languages}
+{% if languages %}
+{{ languages|e }}
+{% else %}
+No languages specified
+{% endif %}
+
+{% if additional_info %}
+% Additional Information
+\sectiontitle{Additional Information}
+{{ additional_info|e }}
+{% endif %}
+
+\end{document} 
